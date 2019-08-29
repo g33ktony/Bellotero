@@ -1,54 +1,72 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React from 'react'
-import logo from './logo.svg'
+import React, { Component } from 'react'
 import './App.css'
+import { connect } from 'react-redux'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom"
+import { Configurator, Testimonial } from './Screens'
+import { setNavData } from './thunks'
 
-function Index() {
+const mapStateToProps = state => ({
+  navData: state.navData
+})
+
+function defaultComponent(){
   return (
-    <div>
-      <div></div>
-    </div>
+    <div></div>
   )
 }
 
-function About() {
-  return <h2>About</h2>;
+class App extends Component {
+
+  componentDidMount() {
+    this.props.dispatch(
+      setNavData()        
+    )
+  }
+
+  render() {
+    const { navData } = this.props
+    return (
+      <Router>
+        <Container>
+          <Row fluid  style={{ height: '8vh' }}>
+            <Col xs={12} lg={3} style={{ height: '8vh', display: 'flex', alignItems: 'center' }} fluid>
+              <Row fluid>
+                <img style={{ height: 26, width: 'auto' }} src='../../bellotero@3x.png' />
+              </Row>
+            </Col>
+            <Col xs={0} lg={4}/>
+            <Col xs={0} lg={5} fluid style={{ display: 'flex', alignItems: 'center' }}>
+              {
+                navData && navData.menu.items.length > 0 && navData.menu.items.map((route, i) => {
+                  let url = route.route
+                  if (route.route === '#') {
+                    url = '/'
+                  }
+                  return (
+                    <NavLink key={i} className='linkStyle' to={url}>{route.text}</NavLink>
+                  )
+                })
+              }
+            </Col>
+          </Row>
+          <Row style={{ height: '92vh' }}>
+            <Route path="/" exact component={defaultComponent} />
+            <Route path="/page-1" component={Testimonial} />
+            <Route path="/page-2" component={Configurator} />
+          </Row>
+        </Container>
+      </Router>
+    )
+  }
 }
 
-function App() {
-  return (
-    <Router>
-      <Container>
-        <Row style={{ height: 65, marginBottom: 16 }}>
-          <Col style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
-            <img style={{ height: 26, width: 'auto' }} src='../../bellotero@3x.png'/>
-          </Col>
-          <Col style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
-            <nav>
-              <ul style={{ display: 'flex', flexDirection: 'row', marginTop: 16 }}>
-                <Link to='/' style={{ color: '#071eb3', fontFamily: 'Roboto', fontWeight: 500, marginRight: 58, listStyleType: 'none' }}>Home</Link>
-                <Link to='/solutions' style={{ color: '#071eb3', fontFamily: 'Roboto', fontWeight: 500, marginRight: 58, listStyleType: 'none' }}>Solutions</Link>
-                <Link to='/stories' style={{ color: '#071eb3', fontFamily: 'Roboto', fontWeight: 500, marginRight: 58, listStyleType: 'none' }}>Stories</Link>
-                <Link to='/partners' style={{ color: '#071eb3', fontFamily: 'Roboto', fontWeight: 500, marginRight: 58, listStyleType: 'none' }}>Partners</Link>
-                <Link to='/about' style={{ color: '#071eb3', fontFamily: 'Roboto', fontWeight: 500, marginRight: 58, listStyleType: 'none' }}>About</Link>
-                <Link to='/blog' style={{ color: '#071eb3', fontFamily: 'Roboto', fontWeight: 500, listStyleType: 'none' }}>Blog</Link>
-              </ul>
-            </nav>
-          </Col>
-        </Row>
-        <Row>
-          <Route path="/" exact component={Index} />
-          <Route path="/about/" component={About} />
-        </Row>
-      </Container>
-    </Router>
-  )
-}
+export default connect(
+  mapStateToProps,
+)(App)
 
-export default App;
 
 

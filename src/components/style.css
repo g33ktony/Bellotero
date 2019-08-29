@@ -1,0 +1,30 @@
+.title {
+  font-size: 36px;
+  display: block;
+  font-family: Roboto;
+  font-weight: 900;
+  line-height: 1.11;
+  letter-spacing: 0.77px;
+  color: #ffffff;
+  width: fit-content;
+  /* padding: 8px; */
+}
+.headerStyle {
+  background-color: #071eb3;
+  /* padding: 8px; */
+  /* max-width: 120px; */
+  /* margin-bottom: 8px; */
+  align-items: center;
+}
+.sliderTitle {
+  width: 160px;
+  height: 32px;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: bold;
+  color: #161616;
+}
+/* .principalBack {
+	background-color: @primary;
+	weight: 10px;
+} */
